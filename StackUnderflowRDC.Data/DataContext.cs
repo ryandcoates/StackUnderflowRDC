@@ -4,7 +4,7 @@ using System;
 
 namespace StackUnderflowRDC.Data
 {
-    public class ApplicationDbContext : DbContext
+    public class DataContext : DbContext
     {
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Response> Responses { get; set; }
