@@ -2,9 +2,9 @@
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace StackUnderflowRDC.Web.Data.Migrations
+namespace StackUnderflowRDC.Data.Migrations.ApplicationDb
 {
-    public partial class CreateIdentitySchema : Migration
+    public partial class ShittyMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

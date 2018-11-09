@@ -1,5 +1,3 @@
-using System;
-
 namespace StackUnderflowRDC.Web.Models
 {
     public class ErrorViewModel

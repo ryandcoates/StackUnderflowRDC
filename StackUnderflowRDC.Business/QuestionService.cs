@@ -27,22 +27,24 @@ namespace StackUnderflowRDC.Business
 
         public Question GetQuestionByResponseId(int id)
         {
-            return _ctx.Questions.Where(q => q.AnswerId == id).First();
+            return _ctx.Questions.First(q => q.AnswerId == id);
         }
 
         public Question NewQuestion(QuestionForCreation data)
         {
-            Question q = new Question();
-            q.PostedAt = new DateTimeOffset();
-            q.Score = 0;
-            q.Answered = false;
-            q.Author = data.Author;
-            q.Body = data.Body;
-            q.Comments = new HashSet<Comment>();
-            q.Responses = new HashSet<Response>();
+	        Question q = new Question
+	        {
+		        PostedAt = new DateTimeOffset(),
+		        Score = 0,
+		        Answered = false,
+		        Author = data.Author,
+		        Body = data.Body,
+		        Comments = new HashSet<Comment>(),
+		        Responses = new HashSet<Response>()
+	        };
 
 
-            _ctx.Questions.Add(q);
+	        _ctx.Questions.Add(q);
             _ctx.SaveChanges();
 
             return q;

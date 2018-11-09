@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using StackUnderflowRDC.Entities;
-using System;
 
 namespace StackUnderflowRDC.Data
 {
