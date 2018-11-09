@@ -3,13 +3,16 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28010.2041
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StackUnderflowRDC.Entities", "StackUnderflowRDC.Entities\StackUnderflowRDC.Entities.csproj", "{AAE05888-C645-405C-AC45-C38D96C238BA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StackUnderflowRDC.Entities", "StackUnderflowRDC.Entities\StackUnderflowRDC.Entities.csproj", "{AAE05888-C645-405C-AC45-C38D96C238BA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StackUnderflowRDC.Data", "StackUnderflowRDC.Data\StackUnderflowRDC.Data.csproj", "{33E70ECB-75BE-40E7-A9FD-D0E479C5D2AD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StackUnderflowRDC.Data", "StackUnderflowRDC.Data\StackUnderflowRDC.Data.csproj", "{33E70ECB-75BE-40E7-A9FD-D0E479C5D2AD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StackUnderflowRDC.Business", "StackUnderflowRDC.Business\StackUnderflowRDC.Business.csproj", "{A2BEDFC6-397A-4CE5-9C44-4185DCD5EF6B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StackUnderflowRDC.Business", "StackUnderflowRDC.Business\StackUnderflowRDC.Business.csproj", "{A2BEDFC6-397A-4CE5-9C44-4185DCD5EF6B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StackUnderflowRDC.Web", "StackUnderflowRDC.Web\StackUnderflowRDC.Web.csproj", "{2718B81D-17C6-4676-988E-AA74E6A92E7E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StackUnderflowRDC.Web", "StackUnderflowRDC.Web\StackUnderflowRDC.Web.csproj", "{2718B81D-17C6-4676-988E-AA74E6A92E7E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{33E70ECB-75BE-40E7-A9FD-D0E479C5D2AD} = {33E70ECB-75BE-40E7-A9FD-D0E479C5D2AD}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using StackUnderflowRDC.Data;
 
 namespace StackUnderflowRDC.Business
 {
@@ -15,7 +16,7 @@ namespace StackUnderflowRDC.Business
         }
         public Comment CreateComment(Comment newComment)
         {
-            _ctx.Comment.Add(newComment);
+            _ctx.Comments.Add(newComment);
             _ctx.SaveChanges();
             return newComment;
         }

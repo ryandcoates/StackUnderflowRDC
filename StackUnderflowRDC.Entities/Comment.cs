@@ -17,6 +17,7 @@ namespace StackUnderflowRDC.Entities
         [MinLength(50)]
         public string Body { get; set; }
         public string Author { get; set; }
-        public DateTimeOffset PostedAt { get; set; }
+	    public int Score { get; set; }
+		public DateTimeOffset PostedAt { get; set; }
     }
 }

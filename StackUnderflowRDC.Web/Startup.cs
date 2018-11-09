@@ -13,6 +13,7 @@ using StackUnderflowRDC.Web.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using StackUnderflowRDC.Business;
+using StackUnderflowRDC.Data;
 
 namespace StackUnderflowRDC.Web
 {
