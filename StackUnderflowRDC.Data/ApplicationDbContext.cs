@@ -21,5 +21,10 @@ namespace StackUnderflowRDC.Data
 		    : base(options)
 	    {
 	    }
-	}
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Ignore<QuestionForCreation>();
+        }
+    }
 }
