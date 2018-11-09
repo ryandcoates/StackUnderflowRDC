@@ -3,14 +3,15 @@ using StackUnderflowRDC.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Identity;
 
 namespace StackUnderflowRDC.Business
 {
     public class QuestionService
     {
-        private readonly DataContext _ctx;
+        private readonly ApplicationDbContext _ctx;
 
-        public QuestionService(DataContext ctx)
+        public QuestionService(ApplicationDbContext ctx)
         {
             _ctx = ctx;
         }
