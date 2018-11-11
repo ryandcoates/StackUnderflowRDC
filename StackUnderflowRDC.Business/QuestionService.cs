@@ -38,10 +38,8 @@ namespace StackUnderflowRDC.Business
         {
             try
             {
-                var user = _um.GetUserAsync(HttpContext.User).Result;
-
+                var user = _um.GetUserAsync(data.UserId).Result;
                 data.UserId = user.Id;
-                return data;
             }
             catch(Exception)
             {
@@ -51,7 +49,7 @@ namespace StackUnderflowRDC.Business
             {
                 PostedAt = new DateTimeOffset(),
                 Score = 0,
-                UserId = data.UserId;
+                UserId = data.UserId,
 		        Answered = false,
 		        Author = data.Author,
 		        Body = data.Body,
