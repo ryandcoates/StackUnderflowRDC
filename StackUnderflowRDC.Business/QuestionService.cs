@@ -13,10 +13,9 @@ namespace StackUnderflowRDC.Business
         private readonly ApplicationDbContext _ctx;
         private readonly UserManager<IdentityUser> _um;
 
-        public QuestionService(ApplicationDbContext ctx, UserManager<IdentityUser> um)
+        public QuestionService(ApplicationDbContext ctx)
         {
             _ctx = ctx;
-            _um = um;
         }
 
         public List<Question> GetAllQuestions()
@@ -36,15 +35,6 @@ namespace StackUnderflowRDC.Business
 
         public Question NewQuestion(QuestionForCreation data)
         {
-            try
-            {
-                var user = _um.GetUserAsync(data.UserId).Result;
-                data.UserId = user.Id;
-            }
-            catch(Exception)
-            {
-                throw;
-            }
             Question q = new Question
             {
                 PostedAt = new DateTimeOffset(),

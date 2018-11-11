@@ -1,5 +1,7 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using StackUnderflowRDC.Data;
@@ -10,10 +12,12 @@ namespace StackUnderflowRDC.Web.Controllers
     public class QuestionsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<IdentityUser> _um;
 
-        public QuestionsController(ApplicationDbContext context)
+        public QuestionsController(ApplicationDbContext context, UserManager<IdentityUser> um)
         {
             _context = context;
+            _um = um;
         }
 
         // GET: Questions
@@ -51,15 +55,25 @@ namespace StackUnderflowRDC.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Body,Author,PostedAt,AnswerId,Score,Answered")] Question question)
+        public async Task<IActionResult> Create([FromBody] Question question)
         {
-            if (ModelState.IsValid)
+            try
             {
-                _context.Add(question);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                var user = _um.GetUserAsync(HttpContext.User).Result;
+                question.UserId = user.Id;
+
+                if (ModelState.IsValid)
+                {
+                    _context.Add(question);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
             }
-            return View(question);
+            catch (Exception)
+            {
+                throw;
+            }
+                return View(question);
         }
 
         // GET: Questions/Edit/5

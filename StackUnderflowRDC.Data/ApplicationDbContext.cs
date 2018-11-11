@@ -25,6 +25,7 @@ namespace StackUnderflowRDC.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Ignore<QuestionForCreation>();
+            base.OnModelCreating(modelBuilder);
         }
     }
 }
