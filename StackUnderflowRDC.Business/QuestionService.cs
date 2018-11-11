@@ -4,42 +4,41 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Http;
 
 namespace StackUnderflowRDC.Business
 {
     public class QuestionService
     {
         private readonly ApplicationDbContext _ctx;
-        private readonly UserManager<IdentityUser> _um;
+	    private readonly DataContext _dataContext;
 
-        public QuestionService(ApplicationDbContext ctx)
+        public QuestionService(ApplicationDbContext ctx, DataContext dataContext)
         {
             _ctx = ctx;
+	        _dataContext = dataContext;
         }
 
         public List<Question> GetAllQuestions()
         {
-            return _ctx.Questions.ToList();
+            return _dataContext.Questions.ToList();
         }
 
         public Question GetQuestionById(int id)
         {
-            return _ctx.Questions.Find(id);
+            return _dataContext.Questions.Find(id);
         }
 
         public Question GetQuestionByResponseId(int id)
         {
-            return _ctx.Questions.First(q => q.AnswerId == id);
+            return _dataContext.Questions.First(q => q.AnswerId == id);
         }
 
         public Question NewQuestion(QuestionForCreation data)
         {
-            Question q = new Question
-            {
-                PostedAt = new DateTimeOffset(),
-                Score = 0,
-                UserId = data.UserId,
+	        Question q = new Question
+	        {
+		        PostedAt = new DateTimeOffset(),
+		        Score = 0,
 		        Answered = false,
 		        Author = data.Author,
 		        Body = data.Body,
@@ -48,8 +47,8 @@ namespace StackUnderflowRDC.Business
 	        };
 
 
-	        _ctx.Questions.Add(q);
-            _ctx.SaveChanges();
+	        _dataContext.Questions.Add(q);
+	        _dataContext.SaveChanges();
 
             return q;
         }

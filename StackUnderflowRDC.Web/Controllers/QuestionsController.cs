@@ -12,18 +12,20 @@ namespace StackUnderflowRDC.Web.Controllers
     public class QuestionsController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private readonly UserManager<IdentityUser> _um;
+	    private readonly UserManager<IdentityUser> _usr;
+	    private readonly DataContext _dataContext;
 
-        public QuestionsController(ApplicationDbContext context, UserManager<IdentityUser> um)
+		public QuestionsController(ApplicationDbContext context, UserManager<IdentityUser> usr, DataContext dataContext)
         {
             _context = context;
-            _um = um;
+	        _dataContext = dataContext;
+	        _usr = usr;
         }
 
         // GET: Questions
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Questions.ToListAsync());
+            return View(await _dataContext.Questions.ToListAsync());
         }
 
         // GET: Questions/Details/5
@@ -34,7 +36,7 @@ namespace StackUnderflowRDC.Web.Controllers
                 return NotFound();
             }
 
-            var question = await _context.Questions
+            var question = await _dataContext.Questions
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (question == null)
             {
@@ -59,13 +61,13 @@ namespace StackUnderflowRDC.Web.Controllers
         {
             try
             {
-                var user = _um.GetUserAsync(HttpContext.User).Result;
+                var user = _usr.GetUserAsync(HttpContext.User).Result;
                 question.UserId = user.Id;
 
                 if (ModelState.IsValid)
                 {
-                    _context.Add(question);
-                    await _context.SaveChangesAsync();
+                    _dataContext.Add(question);
+                    await _dataContext.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));
                 }
             }
@@ -73,7 +75,7 @@ namespace StackUnderflowRDC.Web.Controllers
             {
                 throw;
             }
-                return View(question);
+            return View(question);
         }
 
         // GET: Questions/Edit/5
@@ -84,7 +86,7 @@ namespace StackUnderflowRDC.Web.Controllers
                 return NotFound();
             }
 
-            var question = await _context.Questions.FindAsync(id);
+            var question = await _dataContext.Questions.FindAsync(id);
             if (question == null)
             {
                 return NotFound();
@@ -108,8 +110,8 @@ namespace StackUnderflowRDC.Web.Controllers
             {
                 try
                 {
-                    _context.Update(question);
-                    await _context.SaveChangesAsync();
+	                _dataContext.Update(question);
+                    await _dataContext.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -135,7 +137,7 @@ namespace StackUnderflowRDC.Web.Controllers
                 return NotFound();
             }
 
-            var question = await _context.Questions
+            var question = await _dataContext.Questions
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (question == null)
             {
@@ -150,15 +152,15 @@ namespace StackUnderflowRDC.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var question = await _context.Questions.FindAsync(id);
-            _context.Questions.Remove(question);
-            await _context.SaveChangesAsync();
+            var question = await _dataContext.Questions.FindAsync(id);
+	        _dataContext.Questions.Remove(question);
+            await _dataContext.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool QuestionExists(int id)
         {
-            return _context.Questions.Any(e => e.Id == id);
+            return _dataContext.Questions.Any(e => e.Id == id);
         }
     }
 }

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace StackUnderflowRDC.Data.Migrations.ApplicationDb
 {
-    public partial class ShittyMigration : Migration
+    public partial class BreakingShit : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

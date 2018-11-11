@@ -184,84 +184,6 @@ namespace StackUnderflowRDC.Data.Migrations.ApplicationDb
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("StackUnderflowRDC.Entities.Comment", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Author");
-
-                    b.Property<string>("Body")
-                        .IsRequired();
-
-                    b.Property<DateTimeOffset>("PostedAt");
-
-                    b.Property<int?>("QuestionId");
-
-                    b.Property<int>("ResponseId");
-
-                    b.Property<int>("Score");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("QuestionId");
-
-                    b.HasIndex("ResponseId");
-
-                    b.ToTable("Comments");
-                });
-
-            modelBuilder.Entity("StackUnderflowRDC.Entities.Question", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("AnswerId");
-
-                    b.Property<bool>("Answered");
-
-                    b.Property<string>("Author");
-
-                    b.Property<string>("Body")
-                        .IsRequired();
-
-                    b.Property<DateTimeOffset>("PostedAt");
-
-                    b.Property<int>("Score");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Questions");
-                });
-
-            modelBuilder.Entity("StackUnderflowRDC.Entities.Response", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Author");
-
-                    b.Property<string>("Body")
-                        .IsRequired();
-
-                    b.Property<DateTimeOffset>("PostedAt");
-
-                    b.Property<int>("QuestionId");
-
-                    b.Property<int>("Score");
-
-                    b.Property<bool>("isAnswer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("QuestionId");
-
-                    b.ToTable("Responses");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole")
@@ -304,26 +226,6 @@ namespace StackUnderflowRDC.Data.Migrations.ApplicationDb
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("StackUnderflowRDC.Entities.Comment", b =>
-                {
-                    b.HasOne("StackUnderflowRDC.Entities.Question")
-                        .WithMany("Comments")
-                        .HasForeignKey("QuestionId");
-
-                    b.HasOne("StackUnderflowRDC.Entities.Response")
-                        .WithMany("Comments")
-                        .HasForeignKey("ResponseId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("StackUnderflowRDC.Entities.Response", b =>
-                {
-                    b.HasOne("StackUnderflowRDC.Entities.Question")
-                        .WithMany("Responses")
-                        .HasForeignKey("QuestionId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
