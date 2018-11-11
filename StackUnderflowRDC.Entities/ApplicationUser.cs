@@ -2,6 +2,6 @@
 {
 	public class ApplicationUser
 	{
-		public TYPE Type { get; set; }
+		
 	}
 }

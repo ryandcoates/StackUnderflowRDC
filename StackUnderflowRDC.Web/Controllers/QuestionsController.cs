@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using StackUnderflowRDC.Data;
@@ -10,10 +11,12 @@ namespace StackUnderflowRDC.Web.Controllers
     public class QuestionsController : Controller
     {
         private readonly ApplicationDbContext _context;
+	    private readonly UserManager<IdentityUser> _usr;
 
-        public QuestionsController(ApplicationDbContext context)
+        public QuestionsController(ApplicationDbContext context, UserManager<IdentityUser> usr)
         {
             _context = context;
+	        _usr = usr;
         }
 
         // GET: Questions
