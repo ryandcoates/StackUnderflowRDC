@@ -22,7 +22,7 @@ namespace StackUnderflowRDC.Data
 	    {
 	    }
 
-        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Ignore<QuestionForCreation>();
         }

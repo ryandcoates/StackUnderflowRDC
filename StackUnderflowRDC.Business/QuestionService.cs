@@ -4,16 +4,19 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Http;
 
 namespace StackUnderflowRDC.Business
 {
     public class QuestionService
     {
         private readonly ApplicationDbContext _ctx;
+        private readonly UserManager<IdentityUser> _um;
 
-        public QuestionService(ApplicationDbContext ctx)
+        public QuestionService(ApplicationDbContext ctx, UserManager<IdentityUser> um)
         {
             _ctx = ctx;
+            _um = um;
         }
 
         public List<Question> GetAllQuestions()
@@ -33,10 +36,22 @@ namespace StackUnderflowRDC.Business
 
         public Question NewQuestion(QuestionForCreation data)
         {
-	        Question q = new Question
-	        {
-		        PostedAt = new DateTimeOffset(),
-		        Score = 0,
+            try
+            {
+                var user = _um.GetUserAsync(HttpContext.User).Result;
+
+                data.UserId = user.Id;
+                return data;
+            }
+            catch(Exception)
+            {
+                throw;
+            }
+            Question q = new Question
+            {
+                PostedAt = new DateTimeOffset(),
+                Score = 0,
+                UserId = data.UserId;
 		        Answered = false,
 		        Author = data.Author,
 		        Body = data.Body,
