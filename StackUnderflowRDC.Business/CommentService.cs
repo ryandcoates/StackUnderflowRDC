@@ -49,5 +49,18 @@ namespace StackUnderflowRDC.Business
             return q;
         }
 
+        public void UpVote(Comment c)
+        {
+            c.Score++;
+            _ctx.Comments.Update(c);
+            _ctx.SaveChanges();
+        }
+        public void DownVote(Comment c)
+        {
+            c.Score--;
+            _ctx.Comments.Update(c);
+            _ctx.SaveChanges();
+        }
+
     }
 }
