@@ -17,7 +17,6 @@ namespace StackUnderflowRDC.Entities
         public int AnswerId { get; set; }
         public int Score { get; set; }
         public bool Answered { get; set; }
-        public string UserId { get; set; }
         public ICollection<Response> Responses { get; set; }
         public ICollection<Comment> Comments { get; set; }
     }

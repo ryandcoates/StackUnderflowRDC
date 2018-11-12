@@ -62,7 +62,7 @@ namespace StackUnderflowRDC.Web.Controllers
             try
             {
                 var user = _usr.GetUserAsync(HttpContext.User).Result;
-                question.UserId = user.Id;
+                question.Author = user.UserName;
 
                 if (ModelState.IsValid)
                 {
