@@ -34,11 +34,11 @@ namespace StackUnderflowRDC.Business
             return _dataContext.Questions.First(q => q.AnswerId == id);
         }
 
-        public Question NewQuestion(QuestionForCreation data)
+        public Question NewQuestion(Question data)
         {
 	        Question q = new Question
 	        {
-		        PostedAt = new DateTimeOffset(),
+		        PostedAt = new DateTimeOffset().DateTime,
 		        Score = 0,
 		        Answered = false,
 		        Author = data.Author,

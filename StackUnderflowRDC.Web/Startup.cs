@@ -39,7 +39,8 @@ namespace StackUnderflowRDC.Web
             services.AddDbContext<ApplicationDbContext>();
 	        services.AddDbContext<DataContext>();
 			services.AddTransient<QuestionService>();
-	        services.AddTransient<CommentService>();
+	        services.AddTransient<ResponseService>();
+			services.AddTransient<CommentService>();
 			services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
