@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace StackUnderflowRDC.Business
 {
@@ -25,7 +26,7 @@ namespace StackUnderflowRDC.Business
 
         public Question GetQuestionById(int id)
         {
-            return _dataContext.Questions.Find(id);
+            return _dataContext.Questions.Where(x => x.Id == id).Include(x => x.Responses).FirstOrDefault();
         }
 
         public Question GetQuestionByResponseId(int id)
@@ -33,17 +34,16 @@ namespace StackUnderflowRDC.Business
             return _dataContext.Questions.First(q => q.AnswerId == id);
         }
 
-        public Question NewQuestion(QuestionForCreation data)
+        public Question NewQuestion(Question data)
         {
 	        Question q = new Question
 	        {
-		        PostedAt = new DateTimeOffset(),
+		        PostedAt = new DateTimeOffset().DateTime,
 		        Score = 0,
 		        Answered = false,
 		        Author = data.Author,
 		        Body = data.Body,
-		        Comments = new HashSet<Comment>(),
-		        Responses = new HashSet<Response>()
+		        Responses = new HashSet<Response>(),
 	        };
 
 
@@ -59,7 +59,6 @@ namespace StackUnderflowRDC.Business
             q.Answered = true;
             q.AnswerId = r.Id;
             r.isAnswer = true;
-
 
         }
     }

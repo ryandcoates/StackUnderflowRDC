@@ -7,7 +7,7 @@ using System.Text;
 
 namespace StackUnderflowRDC.Business
 {
-    class ResponseService
+    public class ResponseService
     {
         private readonly ApplicationDbContext _ctx;
         private readonly DataContext _dataContext;

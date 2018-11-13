@@ -77,7 +77,7 @@ namespace StackUnderflowRDC.Web.Controllers
             {
                 throw;
             }
-            return View(response);
+            return View();
 
         }
 
