@@ -58,26 +58,28 @@
     </div>
     @foreach (var response in Model.Responses)
     {
-        <dl class="dl-horizontal">
-            <dt>
-                @Html.DisplayNameFor(x => response.Author)
-            </dt>
-            <dd>
-                @Html.DisplayFor(x => response.Author)
-            </dd>
-            <dt>
-                @Html.DisplayNameFor(x => response.Score)
-            </dt>
-            <dd>
-                @Html.DisplayFor(x => response.Score)
-            </dd>
-            <dt>
-                @Html.DisplayNameFor(x => response.Body)
-            </dt>
-            <dd>
-                @Html.DisplayFor(x => response.Body)
-            </dd>
-        </dl>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(x => response.Author)
+        </dt>
+        <dd>
+            @Html.DisplayFor(x => response.Author)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(x => response.Score)
+        </dt>
+        <dd>
+            @Html.DisplayFor(x => response.Score)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(x => response.Body)
+        </dt>
+        <dd>
+            @Html.DisplayFor(x => response.Body)
+        </dd>
+        <button type="button" onclick="location.href='@Url.Action("UpVote","Comments", response.Id)'">Updoot</button> |
+        <button type="button" onclick="location.href='@Url.Action("DownVote","Comments", response.Id)'">Downdoot</button>
+    </dl>
         @*foreach (var responseComment in response.Comments)
          {
              <dl class="dl-horizontal">
