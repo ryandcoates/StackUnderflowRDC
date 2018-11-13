@@ -36,6 +36,7 @@ namespace StackUnderflowRDC.Business
                 Score = 0,
                 Author = data.Author,
                 Body = data.Body,
+                QuestionId = data.QuestionId,
             };
 
 
