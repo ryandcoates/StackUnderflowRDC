@@ -37,6 +37,11 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <!--<a asp-action="UpVote">Up Vote</a> | 
+    <a asp-action="DownVote">Down Vote </a> | -->
+    <button type="button" onclick="location.href='@Url.Action("UpVote","Comments", Model.Id)'">Up</button>
+ 
+
+    
     <a asp-action="Index">Back to List</a>
 </div>
