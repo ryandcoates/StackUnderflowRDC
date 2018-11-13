@@ -1,10 +1,13 @@
-﻿@model StackUnderflowRDC.Entities.Question
+﻿@using System.Net
+@using Microsoft.AspNetCore.Identity
+@model StackUnderflowRDC.Entities.Question
 
 @{
     ViewData["Title"] = "Create";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@if (!User.Identity.IsAuthenticated){<h2>You must login</h2>}
 <h2>Create</h2>
 
 <h4>Question</h4>
