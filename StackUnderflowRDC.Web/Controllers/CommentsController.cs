@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using StackUnderflowRDC.Business;
 using StackUnderflowRDC.Data;
 using StackUnderflowRDC.Entities;
 
@@ -15,13 +16,16 @@ namespace StackUnderflowRDC.Web.Controllers
     {
         private readonly ApplicationDbContext _context;
 	    private readonly DataContext _dataContext;
+        private readonly CommentService _svc;
         private readonly UserManager<IdentityUser> _usr;
 
-        public CommentsController(ApplicationDbContext context, DataContext dataContext, UserManager<IdentityUser> usr)
+        public CommentsController(ApplicationDbContext context, DataContext dataContext, UserManager<IdentityUser> usr, CommentService commentService)
         {
             _context = context;
 	        _dataContext = dataContext;
             _usr = usr;
+            _svc = commentService;
+
         }
 
         // GET: Comments
@@ -148,6 +152,30 @@ namespace StackUnderflowRDC.Web.Controllers
 
             return View(comment);
         }
+
+        // POST: Comments/5/Up
+        [HttpPost]
+        public async Task<IActionResult> UpVote(int id)
+        {
+            var c = _dataContext.Comments.Find(id);
+            _svc.UpVote(c);
+            _dataContext.Update(c);
+            await _dataContext.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
+        // POST: Comments/5/Down
+        [HttpPost]
+        public async Task<IActionResult> DownVote(int id)
+        {
+            var c = _dataContext.Comments.Find(id);
+            _svc.DownVote(c);
+            _dataContext.Update(c);
+            await _dataContext.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+
+        }
+
 
         // POST: Comments/Delete/5
         [HttpPost, ActionName("Delete")]

@@ -37,6 +37,7 @@ namespace StackUnderflowRDC.Business
 				QuestionId = 1,
                 Author = data.Author,
                 Body = data.Body,
+                QuestionId = data.QuestionId,
             };
 
 
