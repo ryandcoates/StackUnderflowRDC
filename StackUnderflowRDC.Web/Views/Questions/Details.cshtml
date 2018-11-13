@@ -1,4 +1,6 @@
-﻿@model StackUnderflowRDC.Entities.Question
+﻿@using Microsoft.EntityFrameworkCore
+@using StackUnderflowRDC.Entities
+@model StackUnderflowRDC.Entities.Question
 @*@model StackUnderflowRDC.Entities.Comment*@
 
 @{
@@ -31,26 +33,39 @@
             @Html.DisplayFor(model => model.PostedAt)
         </dd>
         @*<dt>
-            @Html.DisplayNameFor(model => model.AnswerId)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.AnswerId)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Score)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Score)
-        </dd>*@
+                @Html.DisplayNameFor(model => model.AnswerId)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.AnswerId)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Score)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Score)
+            </dd>*@
         <dt>
             @Html.DisplayNameFor(model => model.Answered)
         </dt>
         <dd>
             @Html.DisplayFor(model => model.Answered)
+            @*@Html.DisplayFor(model => model.Responses)*@
         </dd>
     </dl>
+    @foreach (var response in Model.Responses)
+    {
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(x => response.Body)
+            </dt>
+            <dd>
+                @Html.DisplayFor(x => response.Body)
+            </dd>
+        </dl>
+    }
 </div>
+
 <div>
-    @*<a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |*@
+    <a asp-action="ResponseCreate" asp-route-id="@Model.Id">Answer the Question</a> |
     <a asp-action="Index">Back to List</a>
 </div>

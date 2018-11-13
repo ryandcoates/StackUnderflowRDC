@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using StackUnderflowRDC.Business;
 using StackUnderflowRDC.Data;
 using StackUnderflowRDC.Entities;
 
@@ -14,12 +15,15 @@ namespace StackUnderflowRDC.Web.Controllers
         private readonly ApplicationDbContext _context;
 	    private readonly UserManager<IdentityUser> _usr;
 	    private readonly DataContext _dataContext;
+	    private readonly QuestionService _questionService;
 
-		public QuestionsController(ApplicationDbContext context, UserManager<IdentityUser> usr, DataContext dataContext)
+		public QuestionsController(ApplicationDbContext context, UserManager<IdentityUser> usr, DataContext dataContext, QuestionService questionService)
         {
             _context = context;
 	        _dataContext = dataContext;
 	        _usr = usr;
+	        _questionService = questionService;
+
         }
 
         // GET: Questions
@@ -29,21 +33,16 @@ namespace StackUnderflowRDC.Web.Controllers
         }
 
         // GET: Questions/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public IActionResult Details(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            //var question = await _dataContext.Questions
+            //    .FirstOrDefaultAsync(m => m.Id == id);
+            //if (question == null)
+            //{
+            //    return NotFound();
+            //}
 
-            var question = await _dataContext.Questions
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (question == null)
-            {
-                return NotFound();
-            }
-
-            return View(question);
+            return View(_questionService.GetQuestionById(id));
         }
 
         // GET: Questions/Create
@@ -94,10 +93,39 @@ namespace StackUnderflowRDC.Web.Controllers
             return View(question);
         }
 
-        // POST: Questions/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+	    public IActionResult ResponseCreate(int id)
+	    {
+		    return View();
+	    }
+
+	    [HttpPost]
+	    [ValidateAntiForgeryToken]
+	    public async Task<IActionResult> ResponseCreate([Bind("Id,QuestionId,Body,Author,PostedAt,Score,isAnswer")] Response response)
+	    {
+		    try
+		    {
+			    var user = _usr.GetUserAsync(HttpContext.User).Result;
+			    response.Author = user.UserName;
+
+			    if (ModelState.IsValid)
+			    {
+				    _dataContext.Add(response);
+				    await _dataContext.SaveChangesAsync();
+				    return RedirectToAction(nameof(Index));
+			    }
+		    }
+		    catch (Exception)
+		    {
+			    throw;
+		    }
+		    return View(response);
+
+	    }
+
+		// POST: Questions/Edit/5
+		// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+		// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+		[HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Body,Author,PostedAt,AnswerId,Score,Answered")] Question question)
         {
