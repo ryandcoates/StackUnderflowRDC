@@ -59,9 +59,17 @@ namespace StackUnderflowRDC.Web.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create([Bind("Id,Body,Author,PostedAt,AnswerId,Score,Answered")] Question question)
         {
-	        _questionService.NewQuestion(question);
-            return View(question);
-        }
+	        var user = _usr.GetUserAsync(HttpContext.User).Result;
+	        question.Author = user.UserName;
+
+	        if (ModelState.IsValid)
+	        {
+		        _questionService.NewQuestion(question);
+				return RedirectToAction(nameof(Index));
+	        }
+
+	        return View(question);
+		}
 
         // GET: Questions/Edit/5
         public async Task<IActionResult> Edit(int? id)
