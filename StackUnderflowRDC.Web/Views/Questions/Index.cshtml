@@ -25,15 +25,15 @@
             <th>
                 @Html.DisplayNameFor(model => model.PostedAt)
             </th>
-            <th>
+            @*<th>
                 @Html.DisplayNameFor(model => model.AnswerId)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Score)
-            </th>
-            <th>
+            </th>*@
+            @*<th>
                 @Html.DisplayNameFor(model => model.Answered)
-            </th>
+            </th>*@
             <th></th>
         </tr>
     </thead>
@@ -50,15 +50,15 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.PostedAt)
                 </td>
-                <td>
+                @*<td>
                     @Html.DisplayFor(modelItem => item.AnswerId)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Score)
-                </td>
-                <td>
+                </td>*@
+                @*<td>
                     @Html.DisplayFor(modelItem => item.Answered)
-                </td>
+                </td>*@
                 <td>
                     @*<a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |*@
                     <a asp-action="Details" asp-route-id="@item.Id">Details</a>
