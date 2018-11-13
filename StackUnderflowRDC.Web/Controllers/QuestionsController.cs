@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -58,11 +59,21 @@ namespace StackUnderflowRDC.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Body,Author,PostedAt,AnswerId,Score,Answered")] Question question)
         {
-            if (ModelState.IsValid)
+            try
             {
-	            _dataContext.Add(question);
-                await _dataContext.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                var user = _usr.GetUserAsync(HttpContext.User).Result;
+                question.Author = user.UserName;
+
+                if (ModelState.IsValid)
+                {
+                    _dataContext.Add(question);
+                    await _dataContext.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+            }
+            catch (Exception)
+            {
+                throw;
             }
             return View(question);
         }
