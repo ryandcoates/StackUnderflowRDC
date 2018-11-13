@@ -10,8 +10,8 @@ using StackUnderflowRDC.Data;
 namespace StackUnderflowRDC.Data.Migrations.ApplicationDb
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20181109013550_ShittyMigration")]
-    partial class ShittyMigration
+    [Migration("20181111220341_BreakingShit")]
+    partial class BreakingShit
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

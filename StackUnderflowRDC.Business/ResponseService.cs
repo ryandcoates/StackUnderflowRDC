@@ -10,20 +10,22 @@ namespace StackUnderflowRDC.Business
     class ResponseService
     {
         private readonly ApplicationDbContext _ctx;
+        private readonly DataContext _dataContext;
 
-        public ResponseService(ApplicationDbContext ctx)
+        public ResponseService(ApplicationDbContext ctx, DataContext dataContext)
         {
             _ctx = ctx;
+            _dataContext = dataContext;
         }
 
         public List<Response> GetAllResponses()
         {
-            return _ctx.Responses.ToList();
+            return _dataContext.Responses.ToList();
         }
 
         public Response GetResponseById(int id)
         {
-            return _ctx.Responses.Find(id);
+            return _dataContext.Responses.Find(id);
         }
 
         public Response NewResponse(Response data)
@@ -37,8 +39,8 @@ namespace StackUnderflowRDC.Business
             };
 
 
-            _ctx.Responses.Add(r);
-            _ctx.SaveChanges();
+            _dataContext.Responses.Add(r);
+            _dataContext.SaveChanges();
 
             return r;
         }
@@ -46,14 +48,14 @@ namespace StackUnderflowRDC.Business
         public void UpVote(Response r)
         {
             r.Score++;
-            _ctx.Responses.Update(c);
-            _ctx.SaveChanges();
+            _dataContext.Responses.Update(r);
+            _dataContext.SaveChanges();
         }
         public void DownVote(Response r)
         {
             r.Score--;
-            _ctx.Responses.Update(r);
-            _ctx.SaveChanges();
+            _dataContext.Responses.Update(r);
+            _dataContext.SaveChanges();
         }
 
     }

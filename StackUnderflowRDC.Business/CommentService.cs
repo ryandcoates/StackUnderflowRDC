@@ -10,25 +10,28 @@ namespace StackUnderflowRDC.Business
     public class CommentService
     {
         private readonly ApplicationDbContext _ctx;
+	    private readonly DataContext _dataContext;
 
-        public CommentService(ApplicationDbContext ctx)
+		public CommentService(ApplicationDbContext ctx, DataContext dataContext)
         {
             _ctx = ctx;
+	        _dataContext = dataContext;
+
         }
 
         public List<Comment> GetAllComments()
         {
-            return _ctx.Comments.ToList();
+            return _dataContext.Comments.ToList();
         }
 
         public Comment GetCommentById(int id)
         {
-            return _ctx.Comments.Find(id);
+            return _dataContext.Comments.Find(id);
         }
 
         public Comment GetCommentByResponseId(int id)
         {
-            return _ctx.Comments.First(q => q.ResponseId == id);
+            return _dataContext.Comments.First(q => q.ResponseId == id);
         }
 
         public Comment NewComment(Comment data)
@@ -43,8 +46,8 @@ namespace StackUnderflowRDC.Business
 	        };
 
 
-	        _ctx.Comments.Add(q);
-            _ctx.SaveChanges();
+	        _dataContext.Comments.Add(q);
+	        _dataContext.SaveChanges();
 
             return q;
         }
@@ -52,14 +55,14 @@ namespace StackUnderflowRDC.Business
         public void UpVote(Comment c)
         {
             c.Score++;
-            _ctx.Comments.Update(c);
-            _ctx.SaveChanges();
+            __dataContext.Comments.Update(c);
+            __dataContext.SaveChanges();
         }
         public void DownVote(Comment c)
         {
             c.Score--;
-            _ctx.Comments.Update(c);
-            _ctx.SaveChanges();
+            __dataContext.Comments.Update(c);
+            __dataContext.SaveChanges();
         }
 
     }

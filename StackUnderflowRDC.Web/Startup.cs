@@ -37,6 +37,7 @@ namespace StackUnderflowRDC.Web
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddDbContext<ApplicationDbContext>();
+	        services.AddDbContext<DataContext>();
 			services.AddTransient<QuestionService>();
 	        services.AddTransient<CommentService>();
 			services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);

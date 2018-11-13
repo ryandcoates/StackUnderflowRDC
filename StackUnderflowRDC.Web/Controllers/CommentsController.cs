@@ -13,16 +13,18 @@ namespace StackUnderflowRDC.Web.Controllers
     public class CommentsController : Controller
     {
         private readonly ApplicationDbContext _context;
+	    private readonly DataContext _dataContext;
 
-        public CommentsController(ApplicationDbContext context)
+        public CommentsController(ApplicationDbContext context, DataContext dataContext)
         {
             _context = context;
+	        _dataContext = dataContext;
         }
 
         // GET: Comments
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Comments.ToListAsync());
+            return View(await _dataContext.Comments.ToListAsync());
         }
 
         // GET: Comments/Details/5
@@ -33,7 +35,7 @@ namespace StackUnderflowRDC.Web.Controllers
                 return NotFound();
             }
 
-            var comment = await _context.Comments
+            var comment = await _dataContext.Comments
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (comment == null)
             {
@@ -58,8 +60,8 @@ namespace StackUnderflowRDC.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(comment);
-                await _context.SaveChangesAsync();
+	            _dataContext.Add(comment);
+                await _dataContext.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(comment);
@@ -73,7 +75,7 @@ namespace StackUnderflowRDC.Web.Controllers
                 return NotFound();
             }
 
-            var comment = await _context.Comments.FindAsync(id);
+            var comment = await _dataContext.Comments.FindAsync(id);
             if (comment == null)
             {
                 return NotFound();
@@ -97,8 +99,8 @@ namespace StackUnderflowRDC.Web.Controllers
             {
                 try
                 {
-                    _context.Update(comment);
-                    await _context.SaveChangesAsync();
+	                _dataContext.Update(comment);
+                    await _dataContext.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -124,7 +126,7 @@ namespace StackUnderflowRDC.Web.Controllers
                 return NotFound();
             }
 
-            var comment = await _context.Comments
+            var comment = await _dataContext.Comments
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (comment == null)
             {
@@ -139,15 +141,15 @@ namespace StackUnderflowRDC.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var comment = await _context.Comments.FindAsync(id);
-            _context.Comments.Remove(comment);
-            await _context.SaveChangesAsync();
+            var comment = await _dataContext.Comments.FindAsync(id);
+	        _dataContext.Comments.Remove(comment);
+            await _dataContext.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool CommentExists(int id)
         {
-            return _context.Comments.Any(e => e.Id == id);
+            return _dataContext.Comments.Any(e => e.Id == id);
         }
     }
 }
