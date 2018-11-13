@@ -16,14 +16,15 @@ namespace StackUnderflowRDC.Web.Controllers
 	    private readonly UserManager<IdentityUser> _usr;
 	    private readonly DataContext _dataContext;
 	    private readonly QuestionService _questionService;
+	    private readonly ResponseService _responseService;
 
-		public QuestionsController(ApplicationDbContext context, UserManager<IdentityUser> usr, DataContext dataContext, QuestionService questionService)
+		public QuestionsController(ApplicationDbContext context, UserManager<IdentityUser> usr, DataContext dataContext, QuestionService questionService, ResponseService responseService)
         {
             _context = context;
 	        _dataContext = dataContext;
 	        _usr = usr;
 	        _questionService = questionService;
-
+	        _responseService = responseService;
         }
 
         // GET: Questions
@@ -58,22 +59,7 @@ namespace StackUnderflowRDC.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Body,Author,PostedAt,AnswerId,Score,Answered")] Question question)
         {
-            try
-            {
-                var user = _usr.GetUserAsync(HttpContext.User).Result;
-                question.Author = user.UserName;
-
-                if (ModelState.IsValid)
-                {
-                    _dataContext.Add(question);
-                    await _dataContext.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
-                }
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+	        _questionService.NewQuestion(question);
             return View(question);
         }
 
@@ -102,22 +88,7 @@ namespace StackUnderflowRDC.Web.Controllers
 	    [ValidateAntiForgeryToken]
 	    public async Task<IActionResult> ResponseCreate([Bind("Id,QuestionId,Body,Author,PostedAt,Score,isAnswer")] Response response)
 	    {
-		    try
-		    {
-			    var user = _usr.GetUserAsync(HttpContext.User).Result;
-			    response.Author = user.UserName;
-
-			    if (ModelState.IsValid)
-			    {
-				    _dataContext.Add(response);
-				    await _dataContext.SaveChangesAsync();
-				    return RedirectToAction(nameof(Index));
-			    }
-		    }
-		    catch (Exception)
-		    {
-			    throw;
-		    }
+		    _responseService.NewResponse(response);
 		    return View(response);
 
 	    }
