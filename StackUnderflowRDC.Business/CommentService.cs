@@ -55,14 +55,14 @@ namespace StackUnderflowRDC.Business
         public void UpVote(Comment c)
         {
             c.Score++;
-            __dataContext.Comments.Update(c);
-            __dataContext.SaveChanges();
+            _dataContext.Comments.Update(c);
+            _dataContext.SaveChanges();
         }
         public void DownVote(Comment c)
         {
             c.Score--;
-            __dataContext.Comments.Update(c);
-            __dataContext.SaveChanges();
+            _dataContext.Comments.Update(c);
+            _dataContext.SaveChanges();
         }
 
     }
