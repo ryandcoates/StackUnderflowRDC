@@ -18,6 +18,6 @@ namespace StackUnderflowRDC.Entities
         public int Score { get; set; }
         public bool Answered { get; set; }
         public ICollection<Response> Responses { get; set; }
-        public ICollection<Comment> Comments { get; set; }
+
     }
 }

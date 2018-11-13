@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using StackUnderflowRDC.Business;
 using StackUnderflowRDC.Data;
 using StackUnderflowRDC.Entities;
 
@@ -14,12 +15,15 @@ namespace StackUnderflowRDC.Web.Controllers
         private readonly ApplicationDbContext _context;
 	    private readonly UserManager<IdentityUser> _usr;
 	    private readonly DataContext _dataContext;
+	    private readonly QuestionService _questionService;
 
-		public QuestionsController(ApplicationDbContext context, UserManager<IdentityUser> usr, DataContext dataContext)
+		public QuestionsController(ApplicationDbContext context, UserManager<IdentityUser> usr, DataContext dataContext, QuestionService questionService)
         {
             _context = context;
 	        _dataContext = dataContext;
 	        _usr = usr;
+	        _questionService = questionService;
+
         }
 
         // GET: Questions
@@ -29,21 +33,16 @@ namespace StackUnderflowRDC.Web.Controllers
         }
 
         // GET: Questions/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public IActionResult Details(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            //var question = await _dataContext.Questions
+            //    .FirstOrDefaultAsync(m => m.Id == id);
+            //if (question == null)
+            //{
+            //    return NotFound();
+            //}
 
-            var question = await _dataContext.Questions
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (question == null)
-            {
-                return NotFound();
-            }
-
-            return View(question);
+            return View(_questionService.GetQuestionById(id));
         }
 
         // GET: Questions/Create
