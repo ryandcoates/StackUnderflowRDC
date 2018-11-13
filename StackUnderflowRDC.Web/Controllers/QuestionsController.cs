@@ -57,7 +57,7 @@ namespace StackUnderflowRDC.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([FromBody] Question question)
+        public async Task<IActionResult> Create([Bind("Id,Body,Author,PostedAt,AnswerId,Score,Answered")] Question question)
         {
             try
             {
