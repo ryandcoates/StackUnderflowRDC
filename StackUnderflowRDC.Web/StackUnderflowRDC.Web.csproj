@@ -16,4 +16,10 @@
     <ProjectReference Include="..\StackUnderflowRDC.Business\StackUnderflowRDC.Business.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="Views\Questions\ResponseCreate.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+  </ItemGroup>
+
 </Project>

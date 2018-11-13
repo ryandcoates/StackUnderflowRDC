@@ -93,10 +93,39 @@ namespace StackUnderflowRDC.Web.Controllers
             return View(question);
         }
 
-        // POST: Questions/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+	    public IActionResult ResponseCreate(int id)
+	    {
+		    return View();
+	    }
+
+	    [HttpPost]
+	    [ValidateAntiForgeryToken]
+	    public async Task<IActionResult> ResponseCreate([Bind("Id,QuestionId,Body,Author,PostedAt,Score,isAnswer")] Response response)
+	    {
+		    try
+		    {
+			    var user = _usr.GetUserAsync(HttpContext.User).Result;
+			    response.Author = user.UserName;
+
+			    if (ModelState.IsValid)
+			    {
+				    _dataContext.Add(response);
+				    await _dataContext.SaveChangesAsync();
+				    return RedirectToAction(nameof(Index));
+			    }
+		    }
+		    catch (Exception)
+		    {
+			    throw;
+		    }
+		    return View(response);
+
+	    }
+
+		// POST: Questions/Edit/5
+		// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+		// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+		[HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Body,Author,PostedAt,AnswerId,Score,Answered")] Question question)
         {

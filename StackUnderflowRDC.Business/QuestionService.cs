@@ -43,7 +43,7 @@ namespace StackUnderflowRDC.Business
 		        Answered = false,
 		        Author = data.Author,
 		        Body = data.Body,
-		        Responses = new HashSet<Response>()
+		        Responses = new HashSet<Response>(),
 	        };
 
 
