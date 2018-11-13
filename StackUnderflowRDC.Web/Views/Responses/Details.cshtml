@@ -1,15 +1,13 @@
-﻿@model StackUnderflowRDC.Entities.Question
-@*@model StackUnderflowRDC.Entities.Comment*@
+﻿@model StackUnderflowRDC.Entities.Response
 
 @{
     ViewData["Title"] = "Details";
-    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h2>Details</h2>
 
 <div>
-    <h4>Question</h4>
+    <h4>Response</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -30,27 +28,21 @@
         <dd>
             @Html.DisplayFor(model => model.PostedAt)
         </dd>
-        @*<dt>
-            @Html.DisplayNameFor(model => model.AnswerId)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.AnswerId)
-        </dd>
         <dt>
             @Html.DisplayNameFor(model => model.Score)
         </dt>
         <dd>
             @Html.DisplayFor(model => model.Score)
-        </dd>*@
+        </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Answered)
+            @Html.DisplayNameFor(model => model.isAnswer)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Answered)
+            @Html.DisplayFor(model => model.isAnswer)
         </dd>
     </dl>
 </div>
 <div>
-    @*<a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |*@
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>

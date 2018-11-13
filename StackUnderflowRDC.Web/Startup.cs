@@ -67,7 +67,7 @@ namespace StackUnderflowRDC.Web
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    template: "{controller=Questions}/{action=Index}/{id?}");
             });
         }
     }
