@@ -57,7 +57,7 @@ namespace StackUnderflowRDC.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Body,Author,PostedAt,AnswerId,Score,Answered")] Question question)
+        public IActionResult Create([Bind("Id,Body,Author,PostedAt,AnswerId,Score,Answered")] Question question)
         {
 	        _questionService.NewQuestion(question);
             return View(question);
@@ -86,7 +86,7 @@ namespace StackUnderflowRDC.Web.Controllers
 
 	    [HttpPost]
 	    [ValidateAntiForgeryToken]
-	    public async Task<IActionResult> ResponseCreate([Bind("Id,QuestionId,Body,Author,PostedAt,Score,isAnswer")] Response response)
+	    public IActionResult ResponseCreate([Bind("Id,QuestionId,Body,Author,PostedAt,Score,isAnswer")] Response response)
 	    {
 		    _responseService.NewResponse(response);
 		    return View(response);

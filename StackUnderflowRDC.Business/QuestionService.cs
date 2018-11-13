@@ -3,6 +3,7 @@ using StackUnderflowRDC.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,7 +18,7 @@ namespace StackUnderflowRDC.Business
         {
             _ctx = ctx;
 	        _dataContext = dataContext;
-        }
+		}
 
         public List<Question> GetAllQuestions()
         {
@@ -38,7 +39,7 @@ namespace StackUnderflowRDC.Business
         {
 	        Question q = new Question
 	        {
-		        PostedAt = new DateTimeOffset().DateTime,
+		        PostedAt = DateTimeOffset.Now,
 		        Score = 0,
 		        Answered = false,
 		        Author = data.Author,
