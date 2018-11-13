@@ -94,12 +94,21 @@ namespace StackUnderflowRDC.Web.Controllers
 
 	    [HttpPost]
 	    [ValidateAntiForgeryToken]
-	    public IActionResult ResponseCreate([Bind("Id,QuestionId,Body,Author,PostedAt,Score,isAnswer")] Response response)
+	    public IActionResult ResponseCreate([Bind("Id,Body,Author,PostedAt,Score,isAnswer")] Response response, int id)
 	    {
-		    _responseService.NewResponse(response);
+		    response.QuestionId = id;
+			var user = _usr.GetUserAsync(HttpContext.User).Result;
+		    response.Author = user.UserName;
+
+		    if (ModelState.IsValid)
+		    {
+			    _responseService.NewResponse(response);
+			    return RedirectToAction(nameof(Index));
+		    }
+
 		    return View(response);
 
-	    }
+		}
 
 		// POST: Questions/Edit/5
 		// To protect from overposting attacks, please enable the specific properties you want to bind to, for 

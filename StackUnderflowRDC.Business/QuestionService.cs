@@ -60,7 +60,6 @@ namespace StackUnderflowRDC.Business
             q.Answered = true;
             q.AnswerId = r.Id;
             r.isAnswer = true;
-
         }
     }
 }

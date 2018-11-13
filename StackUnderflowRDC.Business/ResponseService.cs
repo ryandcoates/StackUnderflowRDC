@@ -32,8 +32,9 @@ namespace StackUnderflowRDC.Business
         {
             Response r = new Response
             {
-                PostedAt = new DateTimeOffset(),
+                PostedAt = DateTimeOffset.Now,
                 Score = 0,
+				QuestionId = 1,
                 Author = data.Author,
                 Body = data.Body,
             };
