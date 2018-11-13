@@ -23,13 +23,13 @@ Overview
 ## Requirements
 
 ### Visualization
-[X] Buttons to upvote and downvote a response
-[] Numbers corresponding to total upvotes vs downvotes
-[] Response is marked as a solution
-[] Each question has its responses, and each response has its comments
+- [X] Buttons to upvote and downvote a response
+- [ ] Numbers corresponding to total upvotes vs downvotes
+- [ ] Response is marked as a solution
+- [ ] Each question has its responses, and each response has its comments
 
 ### Functionality
-[X] Users can Register/Login and Logout
-[X] Users can ask Questions
-[] Users can respond to Questions and can comment on responses
-[X] Users can upvote or downvote responses and questions
+- [X] Users can Register/Login and Logout
+- [X] Users can ask Questions
+- [ ] Users can respond to Questions and can comment on responses
+- [X] Users can upvote or downvote responses and questions
