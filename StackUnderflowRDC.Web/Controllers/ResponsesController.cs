@@ -161,7 +161,7 @@ namespace StackUnderflowRDC.Web.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ResponseExists(int id)
+		private bool ResponseExists(int id)
         {
             return _dataContext.Responses.Any(e => e.Id == id);
         }

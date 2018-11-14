@@ -3,8 +3,10 @@ using StackUnderflowRDC.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using StackUnderflowRDC.Entities.DTO;
 
 namespace StackUnderflowRDC.Business
 {
@@ -17,16 +19,25 @@ namespace StackUnderflowRDC.Business
         {
             _ctx = ctx;
 	        _dataContext = dataContext;
-        }
+		}
 
         public List<Question> GetAllQuestions()
         {
             return _dataContext.Questions.ToList();
         }
 
-        public Question GetQuestionById(int id)
+        public QuestionDto GetQuestionById(int id)
         {
-            return _dataContext.Questions.Where(x => x.Id == id).Include(x => x.Responses).FirstOrDefault();
+	        return _dataContext.Questions.Where(x => x.Id == id)
+		        .GroupJoin(_dataContext.Responses, x => x.Id, response => response.QuestionId, (question, responses) => new QuestionDto
+		        {
+			        Question = question,
+			        Responses = responses.GroupJoin(_dataContext.Comments, response => response.Id, comment => comment.ResponseId, (response, comments) => new ResponseDto
+			        {
+				        Response = response,
+				        Comments = comments.ToList()
+			        }).ToList()
+		        }).FirstOrDefault();
         }
 
         public Question GetQuestionByResponseId(int id)
@@ -38,7 +49,7 @@ namespace StackUnderflowRDC.Business
         {
 	        Question q = new Question
 	        {
-		        PostedAt = new DateTimeOffset().DateTime,
+		        PostedAt = DateTimeOffset.Now,
 		        Score = 0,
 		        Answered = false,
 		        Author = data.Author,
@@ -59,7 +70,6 @@ namespace StackUnderflowRDC.Business
             q.Answered = true;
             q.AnswerId = r.Id;
             r.isAnswer = true;
-
         }
     }
 }
