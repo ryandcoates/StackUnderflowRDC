@@ -17,14 +17,16 @@ namespace StackUnderflowRDC.Web.Controllers
 	    private readonly DataContext _dataContext;
 	    private readonly QuestionService _questionService;
 	    private readonly ResponseService _responseService;
+        private readonly CommentService _commentService;
 
-		public QuestionsController(ApplicationDbContext context, UserManager<IdentityUser> usr, DataContext dataContext, QuestionService questionService, ResponseService responseService)
+		public QuestionsController(ApplicationDbContext context, UserManager<IdentityUser> usr, DataContext dataContext, QuestionService questionService, ResponseService responseService, CommentService commentService)
         {
             _context = context;
 	        _dataContext = dataContext;
 	        _usr = usr;
 	        _questionService = questionService;
 	        _responseService = responseService;
+            _commentService = commentService;
         }
 
         // GET: Questions
@@ -94,7 +96,7 @@ namespace StackUnderflowRDC.Web.Controllers
 
 	    [HttpPost]
 	    [ValidateAntiForgeryToken]
-	    public IActionResult ResponseCreate([Bind("Id,Body,Author,PostedAt,Score,isAnswer")] Response response, int id)
+	    public IActionResult ResponseCreate(int id, [Bind("Id,Body,Author,PostedAt,Score,isAnswer")] Response response)
 	    {
 		    response.QuestionId = id;
 			var user = _usr.GetUserAsync(HttpContext.User).Result;
@@ -110,10 +112,37 @@ namespace StackUnderflowRDC.Web.Controllers
 
 		}
 
-		// POST: Questions/Edit/5
-		// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-		// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-		[HttpPost]
+        // GET: Comments/Create
+        public IActionResult CommentCreate()
+        {
+            return View();
+        }
+
+        // POST: Comments/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CommentCreate(int id, [Bind("Id,ResponseId,Body,Author,Score,PostedAt")] Comment comment)
+        {
+            comment.ResponseId = id;
+            var user = _usr.GetUserAsync(HttpContext.User).Result;
+            comment.Author = user.UserName;
+
+            if (ModelState.IsValid)
+            {
+                _commentService.NewComment(comment);
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View(comment);
+
+        }
+
+        // POST: Questions/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Body,Author,PostedAt,AnswerId,Score,Answered")] Question question)
         {
@@ -197,7 +226,17 @@ namespace StackUnderflowRDC.Web.Controllers
 
         }
 
-		private bool QuestionExists(int id)
+        [HttpPost]
+        public IActionResult MarkAnswered(int id)
+        {
+            var r = _dataContext.Responses.Find(id);
+            _questionService.CloseQuestion(r);
+        
+            return RedirectToAction(nameof(Index));
+
+        }
+
+        private bool QuestionExists(int id)
         {
             return _dataContext.Questions.Any(e => e.Id == id);
         }

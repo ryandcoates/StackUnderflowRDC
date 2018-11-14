@@ -18,6 +18,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Update="Views\Questions\CommentCreate.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Views\Questions\ResponseCreate.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>

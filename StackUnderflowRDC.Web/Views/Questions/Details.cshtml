@@ -12,9 +12,8 @@
 <h2>Details</h2>
 
 <div>
-    <h4>Question</h4>
-    <hr />
-    <dl class="dl-horizontal">
+    <h3 style="font-weight:bold; color:#5DBCD2">Question</h3>
+    <dl class="dl-horizontal" style="color:#5DBCD2">
         <dt>
             @Html.DisplayNameFor(model => model.Question.Body)
         </dt>
@@ -53,13 +52,26 @@
             @*@Html.DisplayFor(model => model.Responses)*@
         </dd>
     </dl>
+    <br>
+    <br>
     <div>
-        <a asp-action="ResponseCreate" asp-route-id="@Model.Question.Id">Answer the Question</a> |
+        @if (User.Identity.IsAuthenticated)
+        {
+            <span>
+                <a class="btn btn-basic" asp-action="ResponseCreate" asp-route-id="@Model.Question.Id">Answer this Question</a> 
+            </span>
+        }
         <a asp-action="Index">Back to List</a>
     </div>
+    <hr />
     @foreach (var response in Model.Responses)
     {
-        <dl class="dl-horizontal">
+        <h5 style="font-weight:bold; color:#468E9F;  margin-left: 50px"> Responses </h5>
+        if (response.Response.isAnswer)
+        {
+            <span>IT IS ANSWERED!!!! WOOO!!! RIGHT HERE!!!</span>
+        }
+        <dl class="dl-horizontal" style="color:#468E9F;  margin-left: 50px">
             <dt>
                 @Html.DisplayNameFor(x => response.Response.Author)
             </dt>
@@ -82,23 +94,49 @@
                 Buttons
             </dt>
             <dd>
-                @using (Html.BeginForm("UpVote", "Questions", FormMethod.Post, new { id = "UpVote" }))
+                @if (User.Identity.IsAuthenticated)
                 {
-                    <input hidden value="@response.Response.Id" name="id" />
-                    <button type="submit">Uptoot</button>
-                } |
-                @using (Html.BeginForm("DownVote", "Questions", FormMethod.Post, new { id = "DownVote" }))
-                {
-                    <input hidden value="@response.Response.Id" name="id" />
-                    <button type="submit">Downtoot</button>
+                <span>
+                    @using (Html.BeginForm("UpVote", "Questions", FormMethod.Post, new { id = "UpVote" }))
+                    {
+                        <input hidden value="@response.Response.Id" name="id" />
+                        <button class="btn btn-success" type="submit">Uptoot</button>
+                    }
+                    @using (Html.BeginForm("DownVote", "Questions", FormMethod.Post, new { id = "DownVote" }))
+                    {
+                        <input hidden value="@response.Response.Id" name="id" />
+                        <button class="btn btn-danger" type="submit">Downtoot</button>
+                    }
+                    @if (!Model.Question.Answered)
+                    {
+                        using (Html.BeginForm("MarkAnswered", "Questions", FormMethod.Post, new { id = "MarkAnswered" }))
+                         {
+                             <input hidden value="@response.Response.Id" name="id" />
+                             <button class="btn btn-primary" type="submit">Mark as Answer</button>
+                         }
+                    }
+                    
+                </span>
                 }
             </dd>
+            <br>
+            <br>
+            @if (User.Identity.IsAuthenticated)
+            {
+                <div>
+                    <a asp-action="CommentCreate" asp-route-id="@response.Response.Id">Comment on this response</a>
+                </div>
+            }
+
         </dl>
+        <hr width="50%">
         if (response.Comments.Any())
         {
+            <h5 style="font-weight:bold; color:#935CE9; margin-left: 100px"> Comments </h5>
             foreach (var responseComment in response.Comments)
             {
-                <dl class="dl-horizontal">
+
+                <dl class="dl-horizontal" style="color:#935CE9; margin-left: 100px">
                     <dt>
                         @Html.DisplayNameFor(x => responseComment.Author)
                     </dt>
@@ -114,5 +152,6 @@
                 </dl>
             }
         }
+        <hr />
     }
 </div>
