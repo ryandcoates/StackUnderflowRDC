@@ -15,4 +15,9 @@ namespace StackUnderflowRDC.Entities.DTO
 		public Response Response { get; set; }
 		public List<Comment> Comments { get; set; }
 	}
+
+    public class CommentDto
+    {
+        public Comment Comment { get; set; }
+    }
 }
