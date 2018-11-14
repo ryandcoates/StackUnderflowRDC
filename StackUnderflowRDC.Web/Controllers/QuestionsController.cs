@@ -94,7 +94,7 @@ namespace StackUnderflowRDC.Web.Controllers
 
 	    [HttpPost]
 	    [ValidateAntiForgeryToken]
-	    public IActionResult ResponseCreate([Bind("Id,Body,Author,PostedAt,Score,isAnswer")] Response response, int id)
+	    public IActionResult ResponseCreate(int id, [Bind("Id,Body,Author,PostedAt,Score,isAnswer")] Response response)
 	    {
 		    response.QuestionId = id;
 			var user = _usr.GetUserAsync(HttpContext.User).Result;
