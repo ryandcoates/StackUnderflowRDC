@@ -24,9 +24,9 @@ Overview
 
 ### Visualization
 - [X] Buttons to upvote and downvote a response
-- [ ] Numbers corresponding to total upvotes vs downvotes
+- [X] Numbers corresponding to total upvotes vs downvotes
 - [ ] Response is marked as a solution
-- [ ] Each question has its responses, and each response has its comments
+- [X] Each question has its responses, and each response has its comments
 
 ### Functionality
 - [X] Users can Register/Login and Logout
