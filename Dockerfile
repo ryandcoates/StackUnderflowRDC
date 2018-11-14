@@ -18,4 +18,4 @@ RUN dotnet publish StackUnderflowRDC.Web.csproj -c Release -o /app
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app .
-CMD ASPNETCORE_URLS=http://*:5000 dotnet StackUnderflowRDC.Web.dll
+CMD ASPNETCORE_URLS=http://*:$PORT dotnet StackUnderflowRDC.Web.dll
