@@ -226,7 +226,17 @@ namespace StackUnderflowRDC.Web.Controllers
 
         }
 
-		private bool QuestionExists(int id)
+        [HttpPost]
+        public IActionResult MarkAnswered(int id)
+        {
+            var r = _dataContext.Responses.Find(id);
+            _questionService.CloseQuestion(r);
+        
+            return RedirectToAction(nameof(Index));
+
+        }
+
+        private bool QuestionExists(int id)
         {
             return _dataContext.Questions.Any(e => e.Id == id);
         }

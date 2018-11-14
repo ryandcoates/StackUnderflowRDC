@@ -40,10 +40,12 @@ namespace StackUnderflowRDC.Business
 		        }).FirstOrDefault();
         }
 
-        public Question GetQuestionByResponseId(int id)
+        public Question GetQuestionByQuestionId(int id)
         {
-            return _dataContext.Questions.First(q => q.AnswerId == id);
+            return _dataContext.Questions.First(q => q.Id == id);
         }
+
+
 
         public Question NewQuestion(Question data)
         {
@@ -66,10 +68,13 @@ namespace StackUnderflowRDC.Business
 
         public void CloseQuestion(Response r)
         {
-            var q = GetQuestionByResponseId(r.Id);
+            var q = GetQuestionByQuestionId(r.QuestionId);
             q.Answered = true;
             q.AnswerId = r.Id;
             r.isAnswer = true;
+            _dataContext.Questions.Update(q);
+            _dataContext.Responses.Update(r);
+            _dataContext.SaveChanges();
         }
     }
 }
