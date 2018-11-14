@@ -9,13 +9,15 @@ namespace StackUnderflowRDC.Data
         //public DbSet<Comment> Comments { get; set; }
         //public DbSet<Response> Responses { get; set; }
         //public DbSet<Question> Questions { get; set; }
-        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        //{
-        //    optionsBuilder.UseSqlServer(@"
-        //           Data Source=(localdb)\mssqllocaldb; 
-        //           Initial Catalog=StackUnderflowRDC;
-        //           Integrated Security=True");
-        //}
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlServer(@"
+                Data Source= den1.mssql7.gear.host ;
+                Initial Catalog=surdcusers;
+                User ID=surdcusers;
+                Password=Zi0M02Y!_65b;
+                ");
+        }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
 		    : base(options)

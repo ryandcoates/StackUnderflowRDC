@@ -10,9 +10,11 @@ namespace StackUnderflowRDC.Data
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
 			optionsBuilder.UseSqlServer(@"
-                Data Source=(localdb)\mssqllocaldb; 
-                Initial Catalog=StackUnderflowRDC;
-                Integrated Security=True");
+                Data Source= den1.mssql7.gear.host ;
+                Initial Catalog=surdc;
+                User ID=surdc;
+                Password=Vs1yxRKm~I~R;
+                ");
 		}
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
