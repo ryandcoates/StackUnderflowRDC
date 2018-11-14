@@ -54,7 +54,12 @@
         </dd>
     </dl>
     <div>
-        <a asp-action="ResponseCreate" asp-route-id="@Model.Question.Id">Answer the Question</a> |
+        @if (User.Identity.IsAuthenticated)
+        {
+        <span>
+            <a asp-action="ResponseCreate" asp-route-id="@Model.Question.Id">Answer the Question</a> |
+        </span>
+        }
         <a asp-action="Index">Back to List</a>
     </div>
     @foreach (var response in Model.Responses)
@@ -82,16 +87,23 @@
                 Buttons
             </dt>
             <dd>
-                @using (Html.BeginForm("UpVote", "Questions", FormMethod.Post, new { id = "UpVote" }))
+                @if (User.Identity.IsAuthenticated)
                 {
-                    <input hidden value="@response.Response.Id" name="id" />
-                    <button type="submit">Uptoot</button>
-                } |
-                @using (Html.BeginForm("DownVote", "Questions", FormMethod.Post, new { id = "DownVote" }))
-                {
-                    <input hidden value="@response.Response.Id" name="id" />
-                    <button type="submit">Downtoot</button>
+                    <span>
+                        @using (Html.BeginForm("UpVote", "Questions", FormMethod.Post, new {id = "UpVote"}))
+                        {
+                            <input hidden value="@response.Response.Id" name="id"/>
+                            <button type="submit">Uptoot</button>
+                        }
+                        |
+                        @using (Html.BeginForm("DownVote", "Questions", FormMethod.Post, new {id = "DownVote"}))
+                        {
+                            <input hidden value="@response.Response.Id" name="id"/>
+                            <button type="submit">Downtoot</button>
+                        }
+                    </span>
                 }
+                
             </dd>
         </dl>
         if (response.Comments.Any())
