@@ -94,9 +94,9 @@
                 }
             </dd>
         </dl>
-        if (response.Response.Comments != null)
+        if (response.Comments.Any())
         {
-            foreach (var responseComment in response.Response.Comments)
+            foreach (var responseComment in response.Comments)
             {
                 <dl class="dl-horizontal">
                     <dt>
