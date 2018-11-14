@@ -103,11 +103,15 @@
                         <input hidden value="@response.Response.Id" name="id" />
                         <button class="btn btn-danger" type="submit">Downtoot</button>
                     }
-                    @using (Html.BeginForm("MarkAnswered", "Questions", FormMethod.Post, new { id = "MarkAnswered" }))
+                    @if (!Model.Question.Answered)
                     {
-                        <input hidden value="@response.Response.Id" name="id" />
-                        <button class="btn btn-primary" type="submit">Mark as Answer</button>
+                        using (Html.BeginForm("MarkAnswered", "Questions", FormMethod.Post, new { id = "MarkAnswered" }))
+                         {
+                             <input hidden value="@response.Response.Id" name="id" />
+                             <button class="btn btn-primary" type="submit">Mark as Answer</button>
+                         }
                     }
+                    
                 </span>
                 }
             </dd>
