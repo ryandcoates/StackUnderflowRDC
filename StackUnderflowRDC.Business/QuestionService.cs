@@ -28,7 +28,7 @@ namespace StackUnderflowRDC.Business
 
         public QuestionDto GetQuestionById(int id)
         {
-	        var taco = _dataContext.Questions.Where(x => x.Id == id)
+	        return _dataContext.Questions.Where(x => x.Id == id)
 		        .GroupJoin(_dataContext.Responses, x => x.Id, response => response.QuestionId, (question, responses) => new QuestionDto
 		        {
 			        Question = question,
@@ -38,8 +38,6 @@ namespace StackUnderflowRDC.Business
 				        Comments = comments.ToList()
 			        }).ToList()
 		        }).FirstOrDefault();
-
-	        return taco;
         }
 
         public Question GetQuestionByResponseId(int id)
