@@ -82,13 +82,21 @@
                 Buttons
             </dt>
             <dd>
-                <button type="button" onclick="location.href='@Url.Action("UpVote","Comments", response.Response.Id)'">Updoot</button> |
-                <button type="button" onclick="location.href='@Url.Action("DownVote","Comments", response.Response.Id)'">Downdoot</button>
+                @using (Html.BeginForm("UpVote", "Questions", FormMethod.Post, new { id = "UpVote" }))
+                {
+                    <input hidden value="@response.Response.Id" name="id" />
+                    <button type="submit">Uptoot</button>
+                } |
+                @using (Html.BeginForm("DownVote", "Questions", FormMethod.Post, new { id = "DownVote" }))
+                {
+                    <input hidden value="@response.Response.Id" name="id" />
+                    <button type="submit">Downtoot</button>
+                }
             </dd>
         </dl>
-        if (response.Response.Comments != null)
+        if (response.Comments.Any())
         {
-            foreach (var responseComment in response.Response.Comments)
+            foreach (var responseComment in response.Comments)
             {
                 <dl class="dl-horizontal">
                     <dt>
