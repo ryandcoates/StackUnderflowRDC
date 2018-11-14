@@ -14,7 +14,7 @@
 <div>
     <h4>Question</h4>
     <hr />
-    <dl class="dl-horizontal">
+    <dl class="dl-horizontal" style="color:purple">
         <dt>
             @Html.DisplayNameFor(model => model.Question.Body)
         </dt>
@@ -54,54 +54,55 @@
         </dd>
     </dl>
     <div>
-        <a asp-action="ResponseCreate" asp-route-id="@Model.Question.Id">Answer the Question</a> |
+        <a asp-action="ResponseCreate" asp-route-id="@Model.Question.Id" style="color:blue;">Answer the Question</a> |
         <a asp-action="Index">Back to List</a>
     </div>
     @foreach (var response in Model.Responses)
     {
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(x => response.Response.Author)
-        </dt>
-        <dd>
-            @Html.DisplayFor(x => response.Response.Author)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(x => response.Response.Score)
-        </dt>
-        <dd>
-            @Html.DisplayFor(x => response.Response.Score)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(x => response.Response.Body)
-        </dt>
-        <dd>
-            @Html.DisplayFor(x => response.Response.Body)
-        </dd>
-        <dt>
-            Buttons
-        </dt>
-        <dd>
-            @using (Html.BeginForm("UpVote", "Questions", FormMethod.Post, new { id = "UpVote" }))
-            {
-                <input hidden value="@response.Response.Id" name="id" />
-                <button type="submit">Uptoot</button>
-            } |
-            @using (Html.BeginForm("DownVote", "Questions", FormMethod.Post, new { id = "DownVote" }))
-            {
-                <input hidden value="@response.Response.Id" name="id" />
-                <button type="submit">Downtoot</button>
-            }
-        </dd>
-        <div>
-            <a asp-action="CommentCreate" asp-route-id="@Model.Response.Id">Comment on the response</a> |
-        </div>
-    </dl>
+        <dl class="dl-horizontal" style="color:blue;">
+            <dt>
+                @Html.DisplayNameFor(x => response.Response.Author)
+            </dt>
+            <dd>
+                @Html.DisplayFor(x => response.Response.Author)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(x => response.Response.Score)
+            </dt>
+            <dd>
+                @Html.DisplayFor(x => response.Response.Score)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(x => response.Response.Body)
+            </dt>
+            <dd>
+                @Html.DisplayFor(x => response.Response.Body)
+            </dd>
+            <dt>
+                Buttons
+            </dt>
+            <dd>
+                @using (Html.BeginForm("UpVote", "Questions", FormMethod.Post, new { id = "UpVote" }))
+                {
+                    <input hidden value="@response.Response.Id" name="id" />
+                    <button type="submit">Uptoot</button>
+                } |
+                @using (Html.BeginForm("DownVote", "Questions", FormMethod.Post, new { id = "DownVote" }))
+                {
+                    <input hidden value="@response.Response.Id" name="id" />
+                    <button type="submit">Downtoot</button>
+                }
+            </dd>
+            <div>
+                <a asp-action="CommentCreate" asp-route-id="@response.Response.Id" style="color:red;">Comment on the response</a> 
+            </div>
+
+        </dl>
         if (response.Comments.Any())
         {
             foreach (var responseComment in response.Comments)
             {
-                <dl class="dl-horizontal">
+                <dl class="dl-horizontal" style="color:red;">
                     <dt>
                         @Html.DisplayNameFor(x => responseComment.Author)
                     </dt>
@@ -117,5 +118,6 @@
                 </dl>
             }
         }
+        <div> ------------------------------------------------------------------------------- </div>
     }
 </div>
