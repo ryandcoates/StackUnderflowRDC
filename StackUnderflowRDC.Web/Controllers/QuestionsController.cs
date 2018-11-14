@@ -182,7 +182,7 @@ namespace StackUnderflowRDC.Web.Controllers
 		    _responseService.UpVote(c);
 		    _dataContext.Update(c);
 		    await _dataContext.SaveChangesAsync();
-		    return RedirectToAction(nameof(Index));
+		    return RedirectToAction("Details", new { id = c.QuestionId });
 	    }
 
 	    // POST: Comments/5/Down
@@ -193,9 +193,9 @@ namespace StackUnderflowRDC.Web.Controllers
 		    _responseService.DownVote(c);
 		    _dataContext.Update(c);
 		    await _dataContext.SaveChangesAsync();
-		    return RedirectToAction(nameof(Index));
+            return RedirectToAction("Details", new { id = c.QuestionId });
 
-	    }
+        }
 
 		private bool QuestionExists(int id)
         {
