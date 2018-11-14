@@ -67,6 +67,10 @@
     @foreach (var response in Model.Responses)
     {
         <h5 style="font-weight:bold; color:#468E9F;  margin-left: 50px"> Responses </h5>
+        if (response.Response.isAnswer)
+        {
+            <span>IT IS ANSWERED!!!! WOOO!!! RIGHT HERE!!!</span>
+        }
         <dl class="dl-horizontal" style="color:#468E9F;  margin-left: 50px">
             <dt>
                 @Html.DisplayNameFor(x => response.Response.Author)
