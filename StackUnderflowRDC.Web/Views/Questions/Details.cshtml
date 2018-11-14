@@ -1,6 +1,7 @@
 ﻿@using Microsoft.EntityFrameworkCore
 @using StackUnderflowRDC.Entities
-@model StackUnderflowRDC.Entities.Question
+@*@model StackUnderflowRDC.Entities.Question*@
+@model StackUnderflowRDC.Entities.DTO.QuestionDto
 @*@model StackUnderflowRDC.Entities.Comment*@
 
 @{
@@ -11,26 +12,26 @@
 <h2>Details</h2>
 
 <div>
-    <h4>Question</h4>
+    <h3 style="color:purple">Question</h3>
     <hr />
-    <dl class="dl-horizontal">
+    <dl class="dl-horizontal" style="color:purple">
         <dt>
-            @Html.DisplayNameFor(model => model.Body)
+            @Html.DisplayNameFor(model => model.Question.Body)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Body)
+            @Html.DisplayFor(model => model.Question.Body)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Author)
+            @Html.DisplayNameFor(model => model.Question.Author)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Author)
+            @Html.DisplayFor(model => model.Question.Author)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.PostedAt)
+            @Html.DisplayNameFor(model => model.Question.PostedAt)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.PostedAt)
+            @Html.DisplayFor(model => model.Question.PostedAt)
         </dd>
         @*<dt>
                 @Html.DisplayNameFor(model => model.AnswerId)
@@ -45,27 +46,106 @@
                 @Html.DisplayFor(model => model.Score)
             </dd>*@
         <dt>
-            @Html.DisplayNameFor(model => model.Answered)
+            @Html.DisplayNameFor(model => model.Question.Answered)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Answered)
+            @Html.DisplayFor(model => model.Question.Answered)
             @*@Html.DisplayFor(model => model.Responses)*@
         </dd>
     </dl>
+    <br>
+    <br>
+    <div>
+        @if (User.Identity.IsAuthenticated)
+        {
+            <span>
+                <button class="btn btn-basic" asp-action="ResponseCreate" asp-route-id="@Model.Question.Id">Answer this Question</button> |
+            </span>
+        }
+        <a asp-action="Index">Back to List</a>
+    </div>
+    <hr />
     @foreach (var response in Model.Responses)
     {
-        <dl class="dl-horizontal">
+        <h5 style="font-weight:bold; color:blue;"> Responses </h5>
+        <dl class="dl-horizontal" style="color:blue;">
             <dt>
-                @Html.DisplayNameFor(x => response.Body)
+                @Html.DisplayNameFor(x => response.Response.Author)
             </dt>
             <dd>
-                @Html.DisplayFor(x => response.Body)
+                @Html.DisplayFor(x => response.Response.Author)
             </dd>
-        </dl>
-    }
-</div>
+            <dt>
+                @Html.DisplayNameFor(x => response.Response.Score)
+            </dt>
+            <dd>
+                @Html.DisplayFor(x => response.Response.Score)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(x => response.Response.Body)
+            </dt>
+            <dd>
+                @Html.DisplayFor(x => response.Response.Body)
+            </dd>
+            <dt>
+                Buttons
+            </dt>
+            <dd>
+                @if (User.Identity.IsAuthenticated)
+                {
+                <span>
+                    @using (Html.BeginForm("UpVote", "Questions", FormMethod.Post, new { id = "UpVote" }))
+                    {
+                        <input hidden value="@response.Response.Id" name="id" />
+                        <button class="btn btn-success" type="submit">Uptoot</button>
+                    }
+                    @using (Html.BeginForm("DownVote", "Questions", FormMethod.Post, new { id = "DownVote" }))
+                    {
+                        <input hidden value="@response.Response.Id" name="id" />
+                        <button class="btn btn-danger" type="submit">Downtoot</button>
+                    }
+                    @using (Html.BeginForm("MarkAnswered", "Questions", FormMethod.Post, new { id = "MarkAnswered" }))
+                    {
+                        <input hidden value="@response.Response.Id" name="id" />
+                        <button class="btn btn-danger" type="submit">Mark as Answer</button>
+                    }
+                </span>
+                }
 
-<div>
-    <a asp-action="ResponseCreate" asp-route-id="@Model.Id">Answer the Question</a> |
-    <a asp-action="Index">Back to List</a>
+            </dd>
+            <br>
+            <br>
+            @if (User.Identity.IsAuthenticated)
+            {
+                <div>
+                    <button class="btn btn-basic" asp-action="CommentCreate" asp-route-id="@response.Response.Id">Comment on this response</button>
+                </div>
+            }
+
+        </dl>
+        <hr width="50%">
+        if (response.Comments.Any())
+        {
+            <h5 style="font-weight:bold; color:red;"> Comments </h5>
+            foreach (var responseComment in response.Comments)
+            {
+
+                <dl class="dl-horizontal" style="color:red;">
+                    <dt>
+                        @Html.DisplayNameFor(x => responseComment.Author)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(x => responseComment.Author)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(x => responseComment.Body)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(x => responseComment.Body)
+                    </dd>
+                </dl>
+            }
+        }
+        <hr />
+    }
 </div>

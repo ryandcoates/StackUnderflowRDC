@@ -17,14 +17,16 @@ namespace StackUnderflowRDC.Web.Controllers
 	    private readonly DataContext _dataContext;
 	    private readonly QuestionService _questionService;
 	    private readonly ResponseService _responseService;
+        private readonly CommentService _commentService;
 
-		public QuestionsController(ApplicationDbContext context, UserManager<IdentityUser> usr, DataContext dataContext, QuestionService questionService, ResponseService responseService)
+		public QuestionsController(ApplicationDbContext context, UserManager<IdentityUser> usr, DataContext dataContext, QuestionService questionService, ResponseService responseService, CommentService commentService)
         {
             _context = context;
 	        _dataContext = dataContext;
 	        _usr = usr;
 	        _questionService = questionService;
 	        _responseService = responseService;
+            _commentService = commentService;
         }
 
         // GET: Questions
@@ -57,11 +59,19 @@ namespace StackUnderflowRDC.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Body,Author,PostedAt,AnswerId,Score,Answered")] Question question)
+        public IActionResult Create([Bind("Id,Body,Author,PostedAt,AnswerId,Score,Answered")] Question question)
         {
-	        _questionService.NewQuestion(question);
-            return View(question);
-        }
+	        var user = _usr.GetUserAsync(HttpContext.User).Result;
+	        question.Author = user.UserName;
+
+	        if (ModelState.IsValid)
+	        {
+		        _questionService.NewQuestion(question);
+				return RedirectToAction(nameof(Index));
+	        }
+
+	        return View(question);
+		}
 
         // GET: Questions/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -86,17 +96,53 @@ namespace StackUnderflowRDC.Web.Controllers
 
 	    [HttpPost]
 	    [ValidateAntiForgeryToken]
-	    public async Task<IActionResult> ResponseCreate([Bind("Id,QuestionId,Body,Author,PostedAt,Score,isAnswer")] Response response)
+	    public IActionResult ResponseCreate(int id, [Bind("Id,Body,Author,PostedAt,Score,isAnswer")] Response response)
 	    {
-		    _responseService.NewResponse(response);
+		    response.QuestionId = id;
+			var user = _usr.GetUserAsync(HttpContext.User).Result;
+		    response.Author = user.UserName;
+
+		    if (ModelState.IsValid)
+		    {
+			    _responseService.NewResponse(response);
+			    return RedirectToAction(nameof(Index));
+		    }
+
 		    return View(response);
 
-	    }
+		}
 
-		// POST: Questions/Edit/5
-		// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-		// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-		[HttpPost]
+        // GET: Comments/Create
+        public IActionResult CommentCreate()
+        {
+            return View();
+        }
+
+        // POST: Comments/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CommentCreate(int id, [Bind("Id,ResponseId,Body,Author,Score,PostedAt")] Comment comment)
+        {
+            comment.ResponseId = id;
+            var user = _usr.GetUserAsync(HttpContext.User).Result;
+            comment.Author = user.UserName;
+
+            if (ModelState.IsValid)
+            {
+                _commentService.NewComment(comment);
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View(comment);
+
+        }
+
+        // POST: Questions/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Body,Author,PostedAt,AnswerId,Score,Answered")] Question question)
         {
@@ -155,6 +201,39 @@ namespace StackUnderflowRDC.Web.Controllers
 	        _dataContext.Questions.Remove(question);
             await _dataContext.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+	    // POST: Comments/5/Up
+	    [HttpPost]
+	    public async Task<IActionResult> UpVote(int id)
+	    {
+		    var c = _dataContext.Responses.Find(id);
+		    _responseService.UpVote(c);
+		    _dataContext.Update(c);
+		    await _dataContext.SaveChangesAsync();
+		    return RedirectToAction("Details", new { id = c.QuestionId });
+	    }
+
+	    // POST: Comments/5/Down
+	    [HttpPost]
+	    public async Task<IActionResult> DownVote(int id)
+	    {
+		    var c = _dataContext.Responses.Find(id);
+		    _responseService.DownVote(c);
+		    _dataContext.Update(c);
+		    await _dataContext.SaveChangesAsync();
+            return RedirectToAction("Details", new { id = c.QuestionId });
+
+        }
+
+        [HttpPost]
+        public IActionResult MarkAnswered(int id)
+        {
+            var r = _dataContext.Responses.Find(id);
+            _questionService.CloseQuestion(r);
+        
+            return RedirectToAction(nameof(Index));
+
         }
 
         private bool QuestionExists(int id)
