@@ -1,6 +1,7 @@
 ﻿@using Microsoft.EntityFrameworkCore
 @using StackUnderflowRDC.Entities
-@model StackUnderflowRDC.Entities.Question
+@*@model StackUnderflowRDC.Entities.Question*@
+@model StackUnderflowRDC.Entities.DTO.QuestionDto
 @*@model StackUnderflowRDC.Entities.Comment*@
 
 @{
@@ -15,22 +16,22 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.Body)
+            @Html.DisplayNameFor(model => model.Question.Body)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Body)
+            @Html.DisplayFor(model => model.Question.Body)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Author)
+            @Html.DisplayNameFor(model => model.Question.Author)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Author)
+            @Html.DisplayFor(model => model.Question.Author)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.PostedAt)
+            @Html.DisplayNameFor(model => model.Question.PostedAt)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.PostedAt)
+            @Html.DisplayFor(model => model.Question.PostedAt)
         </dd>
         @*<dt>
                 @Html.DisplayNameFor(model => model.AnswerId)
@@ -45,57 +46,65 @@
                 @Html.DisplayFor(model => model.Score)
             </dd>*@
         <dt>
-            @Html.DisplayNameFor(model => model.Answered)
+            @Html.DisplayNameFor(model => model.Question.Answered)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Answered)
+            @Html.DisplayFor(model => model.Question.Answered)
             @*@Html.DisplayFor(model => model.Responses)*@
         </dd>
     </dl>
     <div>
-        <a asp-action="ResponseCreate" asp-route-id="@Model.Id">Answer the Question</a> |
+        <a asp-action="ResponseCreate" asp-route-id="@Model.Question.Id">Answer the Question</a> |
         <a asp-action="Index">Back to List</a>
     </div>
     @foreach (var response in Model.Responses)
     {
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(x => response.Author)
-        </dt>
-        <dd>
-            @Html.DisplayFor(x => response.Author)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(x => response.Score)
-        </dt>
-        <dd>
-            @Html.DisplayFor(x => response.Score)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(x => response.Body)
-        </dt>
-        <dd>
-            @Html.DisplayFor(x => response.Body)
-        </dd>
-        <button type="button" onclick="location.href='@Url.Action("UpVote","Comments", response.Id)'">Updoot</button> |
-        <button type="button" onclick="location.href='@Url.Action("DownVote","Comments", response.Id)'">Downdoot</button>
-    </dl>
-        @*foreach (var responseComment in response.Comments)
-         {
-             <dl class="dl-horizontal">
-                 <dt>
-                     @Html.DisplayNameFor(x => response.Author)
-                 </dt>
-                 <dd>
-                     @Html.DisplayFor(x => response.Author)
-                 </dd>
-                 <dt>
-                     @Html.DisplayNameFor(x => response.Body)
-                 </dt>
-                 <dd>
-                     @Html.DisplayFor(x => response.Body)
-                 </dd>
-             </dl>
-         }*@
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(x => response.Response.Author)
+            </dt>
+            <dd>
+                @Html.DisplayFor(x => response.Response.Author)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(x => response.Response.Score)
+            </dt>
+            <dd>
+                @Html.DisplayFor(x => response.Response.Score)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(x => response.Response.Body)
+            </dt>
+            <dd>
+                @Html.DisplayFor(x => response.Response.Body)
+            </dd>
+            <dt>
+                Buttons
+            </dt>
+            <dd>
+                <button type="button" onclick="location.href='@Url.Action("UpVote","Comments", response.Response.Id)'">Updoot</button> |
+                <button type="button" onclick="location.href='@Url.Action("DownVote","Comments", response.Response.Id)'">Downdoot</button>
+            </dd>
+        </dl>
+        if (response.Response.Comments != null)
+        {
+            foreach (var responseComment in response.Response.Comments)
+            {
+                <dl class="dl-horizontal">
+                    <dt>
+                        @Html.DisplayNameFor(x => responseComment.Author)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(x => responseComment.Author)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(x => responseComment.Body)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(x => responseComment.Body)
+                    </dd>
+                </dl>
+            }
+        }
     }
 </div>

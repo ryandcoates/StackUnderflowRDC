@@ -6,6 +6,7 @@ using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using StackUnderflowRDC.Entities.DTO;
 
 namespace StackUnderflowRDC.Business
 {
@@ -25,9 +26,18 @@ namespace StackUnderflowRDC.Business
             return _dataContext.Questions.ToList();
         }
 
-        public Question GetQuestionById(int id)
+        public QuestionDto GetQuestionById(int id)
         {
-            return _dataContext.Questions.Where(x => x.Id == id).Include(x => x.Responses).FirstOrDefault();
+	        return _dataContext.Questions.Where(x => x.Id == id)
+		        .GroupJoin(_dataContext.Responses, x => x.Id, response => response.QuestionId, (question, responses) => new QuestionDto
+		        {
+			        Question = question,
+			        Responses = responses.GroupJoin(_dataContext.Comments, response => response.Id, comment => comment.ResponseId, (response, comments) => new ResponseDto
+			        {
+				        Response = response,
+				        Comments = comments.ToList()
+			        }).ToList()
+		        }).FirstOrDefault();
         }
 
         public Question GetQuestionByResponseId(int id)
