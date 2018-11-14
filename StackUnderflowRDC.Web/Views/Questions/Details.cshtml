@@ -12,9 +12,8 @@
 <h2>Details</h2>
 
 <div>
-    <h3 style="color:purple">Question</h3>
-    <hr />
-    <dl class="dl-horizontal" style="color:purple">
+    <h3 style="font-weight:bold; color:#5DBCD2">Question</h3>
+    <dl class="dl-horizontal" style="color:#5DBCD2">
         <dt>
             @Html.DisplayNameFor(model => model.Question.Body)
         </dt>
@@ -59,7 +58,7 @@
         @if (User.Identity.IsAuthenticated)
         {
             <span>
-                <button class="btn btn-basic" asp-action="ResponseCreate" asp-route-id="@Model.Question.Id">Answer this Question</button> |
+                <a class="btn btn-basic" asp-action="ResponseCreate" asp-route-id="@Model.Question.Id">Answer this Question</a> 
             </span>
         }
         <a asp-action="Index">Back to List</a>
@@ -67,8 +66,8 @@
     <hr />
     @foreach (var response in Model.Responses)
     {
-        <h5 style="font-weight:bold; color:blue;"> Responses </h5>
-        <dl class="dl-horizontal" style="color:blue;">
+        <h5 style="font-weight:bold; color:#468E9F;  margin-left: 50px"> Responses </h5>
+        <dl class="dl-horizontal" style="color:#468E9F;  margin-left: 50px">
             <dt>
                 @Html.DisplayNameFor(x => response.Response.Author)
             </dt>
@@ -93,7 +92,7 @@
             <dd>
                 @if (User.Identity.IsAuthenticated)
                 {
-                    <span>
+                    <div class="row">
                         @using (Html.BeginForm("UpVote", "Questions", FormMethod.Post, new { id = "UpVote" }))
                         {
                             <input hidden value="@response.Response.Id" name="id" />
@@ -104,16 +103,15 @@
                             <input hidden value="@response.Response.Id" name="id" />
                             <button class="btn btn-danger" type="submit">Downtoot</button>
                         }
-                    </span>
+                    </div>
                 }
-
             </dd>
             <br>
             <br>
             @if (User.Identity.IsAuthenticated)
             {
                 <div>
-                    <button class="btn btn-basic" asp-action="CommentCreate" asp-route-id="@response.Response.Id">Comment on this response</button>
+                    <a asp-action="CommentCreate" asp-route-id="@response.Response.Id">Comment on this response</a>
                 </div>
             }
 
@@ -121,11 +119,11 @@
         <hr width="50%">
         if (response.Comments.Any())
         {
-            <h5 style="font-weight:bold; color:red;"> Comments </h5>
+            <h5 style="font-weight:bold; color:#935CE9; margin-left: 100px"> Comments </h5>
             foreach (var responseComment in response.Comments)
             {
 
-                <dl class="dl-horizontal" style="color:red;">
+                <dl class="dl-horizontal" style="color:#935CE9; margin-left: 100px">
                     <dt>
                         @Html.DisplayNameFor(x => responseComment.Author)
                     </dt>
