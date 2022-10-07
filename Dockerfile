@@ -1,7 +1,7 @@
-FROM microsoft/dotnet:2.1-aspnetcore-runtime AS base
+FROM mcr.microsoft.com/dotnet/aspnet:2.1 AS base
 WORKDIR /app
 
-FROM microsoft/dotnet:2.1-sdk AS build
+FROM mcr.microsoft.com/dotnet/sdk:2.1 AS build
 WORKDIR /src
 COPY StackUnderflowRDC.Web/StackUnderflowRDC.Web.csproj StackUnderflowRDC.Web/
 COPY StackUnderflowRDC.Business/StackUnderflowRDC.Business.csproj StackUnderflowRDC.Business/
